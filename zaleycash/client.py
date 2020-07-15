@@ -122,13 +122,16 @@ class ZaleyCashClient:
         data = self._make_request('user/children', method='POST', json=dict(user=user_id))
         return data
 
-    def transfer_money_to_referral(self, user_id, amount, operation_id):
+    def transfer_money_to_referral(self, user_id, currency, amount, operation_id):
         json = {
-            'internal': {
-                'user_id': user_id,
-                'amount': amount,
-                'operation_id': str(operation_id),
-            }
+            'user_id': user_id,
+            'currency': currency,
+            'amount': amount,
+            'operation_id': str(operation_id),
         }
-        data = self._make_request('money/transfer', method='POST', json=json)
+        data = self._make_request('money/transfer/internal', method='POST', json=json)
+        return data
+
+    def get_currencies(self):
+        data = self._make_request('money/currencies', method='GET')
         return data
